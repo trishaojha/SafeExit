@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Homework Planner</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body class="disguise-mode">
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!--  DISGUISE SCREEN — looks like homework tracker  -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div id="disguise-app">
+    <header class="hw-header">
+      <span class="hw-logo">📚 StudyTrack</span>
+      <button id="reveal-btn" class="hw-reveal-btn" title="Show real app">Switch View</button>
+    </header>
+    <div class="hw-body">
+      <h2>This Week's Assignments</h2>
+      <ul class="hw-list">
+        <li class="hw-item done"><span>✓</span> Math — Chapter 7 review</li>
+        <li class="hw-item"><span>○</span> English — Essay draft due Friday</li>
+        <li class="hw-item"><span>○</span> Bio — Lab report</li>
+        <li class="hw-item done"><span>✓</span> History — Reading pp. 44–60</li>
+        <li class="hw-item"><span>○</span> Spanish — Vocab quiz prep</li>
+      </ul>
+      <div class="hw-progress">
+        <div class="hw-progress-label">Progress: 2 / 5</div>
+        <div class="hw-bar"><div class="hw-fill" style="width:40%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════════════════════════════════════ -->
+  <!--  REAL APP — SafeExit                 -->
+  <!-- ═════════════════════════════════════ -->
+  <div id="safe-app" class="hidden">
+
+    <!-- Top bar -->
+    <header class="se-header">
+      <div class="se-brand">
+        <div class="se-logo">SE</div>
+        <div>
+          <div class="se-title">SafeExit</div>
+          <div class="se-subtitle">Your private safety companion</div>
+        </div>
+      </div>
+      <button id="hide-btn" class="hide-btn">🙈 Hide</button>
+    </header>
+
+    <!-- Hotline banner -->
+    <div class="hotline-bar">
+      <span>🆘 National DV Hotline</span>
+      <a href="tel:18007997233" class="hotline-number">1-800-799-7233</a>
+    </div>
+
+    <!-- Tab nav -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="home">Home</button>
+      <button class="tab-btn" data-tab="shelters">Shelters</button>
+      <button class="tab-btn" data-tab="checklist">Checklist</button>
+      <button class="tab-btn" data-tab="log">My Log</button>
+    </nav>
+
+    <!-- ── HOME TAB ── -->
+    <section id="tab-home" class="tab-content active">
+      <div class="card reassurance-card">
+        <div class="reassure-title">You are not alone 💜</div>
+        <p class="reassure-text">This app is private and stored only on your device. Tap "Hide" anytime to switch to the homework disguise.</p>
+      </div>
+
+      <div class="section-label">QUICK ACCESS</div>
+      <div class="quick-grid">
+        <button class="quick-btn" onclick="switchTab('shelters')">🏠<span>Find nearby shelter</span></button>
+        <button class="quick-btn" onclick="switchTab('checklist')">✅<span>Safety checklist</span></button>
+        <button class="quick-btn" onclick="switchTab('log')">📝<span>Log an incident</span></button>
+        <a class="quick-btn" href="sms:741741?body=START">📱<span>Text "START" to 741741</span></a>
+      </div>
+
+      <div class="section-label danger-label">IMMEDIATE DANGER</div>
+      <div class="card danger-card">
+        <div class="danger-title">Call 911</div>
+        <p class="danger-text">You can text 911 in most areas if you cannot speak safely right now.</p>
+        <a href="tel:911" class="call-911-btn">📞 Call 911</a>
+      </div>
+    </section>
+
+    <!-- ── SHELTERS TAB ── -->
+    <section id="tab-shelters" class="tab-content hidden">
+      <div class="card">
+        <label class="zip-label">Enter your zip code</label>
+        <div class="zip-row">
+          <input id="zip-input" type="text" inputmode="numeric" maxlength="5" placeholder="e.g. 07060" class="zip-input" />
+          <button id="search-btn" class="search-btn">Search</button>
+        </div>
+      </div>
+      <div id="shelter-results"></div>
+    </section>
+
+    <!-- ── CHECKLIST TAB ── -->
+    <section id="tab-checklist" class="tab-content hidden">
+      <div class="card">
+        <div class="checklist-header">
+          <span class="checklist-title">Items ready</span>
+          <span id="checklist-count" class="checklist-count">0 of 12</span>
+        </div>
+        <div class="checklist-bar"><div id="checklist-fill" class="checklist-fill"></div></div>
+      </div>
+
+      <div class="section-label">DOCUMENTS</div>
+      <div class="card checklist-group" id="checklist-docs"></div>
+
+      <div class="section-label">ESSENTIALS</div>
+      <div class="card checklist-group" id="checklist-essentials"></div>
+
+      <div class="section-label">FOR CHILDREN</div>
+      <div class="card checklist-group" id="checklist-children"></div>
+    </section>
+
+    <!-- ── LOG TAB ── -->
+    <section id="tab-log" class="tab-content hidden">
+
+      <!-- PIN gate -->
+      <div id="log-gate" class="card pin-card">
+        <div class="pin-title">🔒 Private Log</div>
+        <p class="pin-desc">Set a 4-digit PIN to protect your entries. Only stored on this device — never uploaded.</p>
+        <input id="pin-input" type="password" inputmode="numeric" maxlength="4" placeholder="Enter PIN" class="pin-input" />
+        <button id="pin-btn" class="pin-btn">Unlock</button>
+        <p id="pin-error" class="pin-error hidden">Incorrect PIN. Try again.</p>
+      </div>
+
+      <!-- Log content (shown after PIN) -->
+      <div id="log-content" class="hidden">
+        <div class="card">
+          <div class="new-entry-label">NEW ENTRY</div>
+          <textarea id="entry-text" placeholder="Describe what happened…" class="entry-textarea"></textarea>
+          <input id="entry-location" type="text" placeholder="Location (optional)" class="entry-location" />
+          <button id="save-entry-btn" class="save-entry-btn">Save Entry</button>
+        </div>
+        <div id="entries-list"></div>
+        <p class="log-privacy-note">🔒 Saved only on this device. Never uploaded or shared.</p>
+      </div>
+    </section>
+
+  </div><!-- /safe-app -->
+
+  <script src="app.js"></script>
+</body>
+</html>
